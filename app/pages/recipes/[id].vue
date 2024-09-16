@@ -7,6 +7,26 @@ const { id } = route.params;
 const { data, error } = await useFetch<Recipe>(
   `https://dummyjson.com/recipes/${id}`
 );
+
+if (error.value) {
+  throw createError({
+    statusCode: error.value?.statusCode,
+    statusMessage: error.value?.statusMessage,
+  });
+}
+
+useSeoMeta({
+  title: data.value?.name,
+  description: "Recipe for you to cook!",
+  ogTitle: data.value?.name,
+  ogDescription: "Recipe for you to cook!",
+  ogImage: data.value?.image,
+  ogUrl: `http://localhost:3000/recipes/${data.value?.id}`,
+  twitterTitle: data.value?.name,
+  twitterDescription: "Recipe for you to cook!",
+  twitterImage: data.value?.image,
+  twitterCard: "summary",
+});
 </script>
 
 <template>

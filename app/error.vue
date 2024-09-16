@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NuxtError } from "#app";
+import type BaseButton from "./components/BaseButton.vue";
 
 const props = defineProps({
   error: Object as () => NuxtError,
@@ -12,11 +13,8 @@ const props = defineProps({
       {{ error?.statusCode }}
     </h1>
     <p class="mb-10 text-xl sm:text-3xl">{{ error?.statusMessage }}</p>
-    <NuxtLink
-      to="/"
-      class="px-4 py-2 text-lg text-white rounded-md cursor-pointer bg-dodgeroll-gold"
-    >
-      Go home
-    </NuxtLink>
+    <div>
+      <BaseButton to="/" label="Go Home" />
+    </div>
   </section>
 </template>

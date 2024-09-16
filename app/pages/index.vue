@@ -1,10 +1,24 @@
 <script setup lang="ts">
+import RecipeCard from "~/components/RecipeCard.vue";
 import { type RecipeResponse } from "~/types/types";
 const limit = 12;
 
 const { data, error } = await useFetch<RecipeResponse>(
   `https://dummyjson.com/recipes?limit=${limit}`
 );
+
+useSeoMeta({
+  title: "Nuxtcipes",
+  description: "Recipes for you to cook!",
+  ogTitle: "Nuxtcipes",
+  ogDescription: "Recipes for you to cook!",
+  ogImage: "/nuxt-course-hero.png",
+  ogUrl: `http:localhost:3000`,
+  twitterTitle: "Nuxtcipes",
+  twitterDescription: "Recipes for you to cook!",
+  twitterImage: "/nuxt-course-hero.png",
+  twitterCard: "summary",
+});
 </script>
 
 <template>
@@ -44,48 +58,7 @@ const { data, error } = await useFetch<RecipeResponse>(
         v-if="!error"
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8"
       >
-        <div
-          v-for="recipe in data?.recipes"
-          class="flex flex-col rounded-md shadow"
-        >
-          <NuxtImg
-            :src="recipe.image"
-            sizes="xs:100vw sm:50vw lg:400px"
-            format="webp"
-            densities="x1"
-            alt=""
-            class="rounded-t-md"
-          />
-          <div class="flex flex-col flex-1 px-4 py-6">
-            <p class="mb-2 text-xl font-semibold lg:text-2xl">
-              {{ recipe.name }}
-            </p>
-            <div
-              class="flex w-full gap-8 mt-auto mb-4 text-lg font-normal bg-white/80 lg:text-xl"
-            >
-              <div class="flex items-center gap-1">
-                <Icon
-                  name="mdi:clock-time-eight-outline"
-                  style="color: #f79f1a"
-                />
-                <span>{{ recipe.cookTimeMinutes }}</span>
-              </div>
-              <div class="flex items-center gap-1">
-                <Icon name="mdi:fire" style="color: #f79f1a" />
-                <span>{{ recipe.caloriesPerServing }}</span>
-              </div>
-              <div class="flex items-center gap-1">
-                <Icon name="mdi:star" style="color: #f79f1a" />
-                <span>{{ recipe.rating }} ({{ recipe.reviewCount }})</span>
-              </div>
-            </div>
-            <NuxtLink
-              :to="`/recipes/${recipe.id}`"
-              class="self-start px-4 py-2 text-base text-white rounded-md cursor-pointer bg-dodgeroll-gold lg:text-lg"
-              >View</NuxtLink
-            >
-          </div>
-        </div>
+        <RecipeCard v-for="recipe in data?.recipes" :recipe="recipe" />
       </div>
       <p v-else class="text-xl">
         {{ error }}
